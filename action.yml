@@ -4,14 +4,18 @@ description: "Realiza el Restore, build y test"
 input:
   github_username:
     description: "usuario de github para autenticarse en los packages"
-    requiered: true
+    required: true
   github_token:
     description: "token del usuario con permisos de lectura en packages"
-    requiered: true
-  input_workdir_src:
-    description: "directorio donde se encuentra el project a compilar DEFAULT: src/"
-  input_workdir_test:
-    description: "directorio donde se encuentra los test DEFAULT: test/"
+    required: true
+  workdir_src:
+    description: "directorio donde se encuentra el project a compilar DEFAULT: ./src"
+    required: false
+    default: ./src
+  workdir_test:
+    description: "directorio donde se encuentra los test DEFAULT: ./test"
+    required: false
+    default: ./test
 runs:
   using: "composite"
   steps:
@@ -20,18 +24,6 @@ runs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.x
-      - name: Set workdirs
-        uses: actions/github-script@v5
-        with:
-          script: |
-            if(${inputs.input_workdir_src} === "")
-              core.exportVariable('workdir_src', `./src`)
-            else
-              core.exportVariable('workdir_src', ${inputs.input_workdir_src})
-            if(${inputs.input_workdir_test} === "")
-              core.exportVariable('workdir_test', `./test`)
-            else
-              core.exportVariable('workdir_test', ${inputs.input_workdir_test})
       - name: Add Github Package
         run: |
           dotnet nuget locals -c all
@@ -41,7 +33,7 @@ runs:
         run: |
           dotnet restore
           dotnet build
-        working-directory: ${{ env.workdir_src }}
+        working-directory: ${{ inputs.workdir_src }}
       - name: dotnet test
         run: dotnet test
-        working-directory: ${{ env.workdir_test }}
+        working-directory: ${{ inputs.workdir_test }}
