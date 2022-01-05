@@ -26,15 +26,18 @@ runs:
         with:
           dotnet-version: 5.x
       - name: Add Github Package
+        shell: bash
         run: |
           dotnet nuget locals -c all
           dotnet nuget add source https://nuget.pkg.github.com/architecture-it/index.json --name github -u ${{ inputs.github_username}} -p ${{ inputs.github_token }} --store-password-in-clear-text
       # Run dotnet build and package
       - name: dotnet build
+        shell: bash
         run: |
           dotnet restore
           dotnet build
         working-directory: ${{ inputs.workdir_src }}
       - name: dotnet test
+        shell: bash
         run: dotnet test
         working-directory: ${{ inputs.workdir_test }}
