@@ -21,13 +21,13 @@ runs:
         with:
           dotnet-version: 5.x
       - name: Set workdir src
-        shell: bash
         run: |
           if [-z "${{inputs.input_workdir_src}}" ]
           then
             echo "workdir_src=./src/" >> $GITHUB_ENV
           else
             echo "workdir_src=${{inputs.input_workdir_src}}" >> $GITHUB_ENV
+        shell: bash
       - name: set workdir test
         run: |
           if [-z "${{inputs.input_workdir_test}}" ]
