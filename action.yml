@@ -8,13 +8,13 @@ inputs:
     description: "token del usuario con permisos de lectura en packages"
     required: true
   workdir_src:
-    description: "directorio donde se encuentra el project a compilar DEFAULT: ./src"
+    description: "directorio donde se encuentra el project a compilar DEFAULT: ./"
     required: false
-    default: './src'
+    default: './'
   workdir_test:
-    description: "directorio donde se encuentra los test DEFAULT: ./test"
+    description: "directorio donde se encuentra los test DEFAULT: ./"
     required: false
-    default: './test'
+    default: './'
 runs:
   using: "composite"
   steps:
