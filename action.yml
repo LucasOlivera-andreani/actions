@@ -20,7 +20,7 @@ runs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.x
-      - name: Set workdirs
+      - name: Set workdir src
         shell: bash
         run: |
           if [-z "${{inputs.input_workdir_src}}" ]
@@ -28,11 +28,14 @@ runs:
             echo "workdir_src=./src/" >> $GITHUB_ENV
           else
             echo "workdir_src=${{inputs.input_workdir_src}}" >> $GITHUB_ENV
+      - name: set workdir test
+        run: |
           if [-z "${{inputs.input_workdir_test}}" ]
           then
             echo "workdir_test=./test/" >> $GITHUB_ENV
           else
             echo "workdir_test=${{inputs.input_workdir_test}}" >> $GITHUB_ENV
+        shell: bash
       - name: Add Github Package
         run: |
           dotnet nuget locals -c all
