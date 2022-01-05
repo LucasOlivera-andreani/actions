@@ -8,7 +8,7 @@ inputs:
     description: "token del usuario con permisos de lectura en packages"
     required: true
   workdir_src:
-    description: "directorio donde se encuentra el project a compilar DEFAULT: ./"
+    description: "directorio donde se encuentra el cproj a compilar DEFAULT: ./"
     required: false
     default: './'
   workdir_test:
