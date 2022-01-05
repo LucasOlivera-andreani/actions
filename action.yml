@@ -21,6 +21,7 @@ runs:
         with:
           dotnet-version: 5.x
       - name: Set workdir src
+        shell: bash
         run: |
           if [-z "${{inputs.input_workdir_src}}" ]
           then
@@ -28,6 +29,7 @@ runs:
           else
             echo "workdir_src=${{inputs.input_workdir_src}}" >> $GITHUB_ENV
       - name: set workdir test
+        shell: bash
         run: |
           if [-z "${{inputs.input_workdir_test}}" ]
           then
