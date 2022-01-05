@@ -1,0 +1,48 @@
+name: "Dotnet build"
+description: "Realiza el Restore, build y test"
+
+input:
+  github_username:
+    description: "usuario de github para autenticarse en los packages"
+    requiered: true
+  github_token:
+    description: "token del usuario con permisos de lectura en packages"
+    requiered: true
+  input_workdir_src:
+    description: "directorio donde se encuentra el project a compilar DEFAULT: src/"
+  input_workdir_test:
+    description: "directorio donde se encuentra los test DEFAULT: test/"
+runs:
+  using: "composite"
+  steps:
+        # Setup .NET Core SDK
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.x
+      - name: Set workdirs
+        shell: bash
+        run: |
+          if [-z "${{inputs.input_workdir_src}}" ]
+          then
+            echo "workdir_src=./src/" >> $GITHUB_ENV
+          else
+            echo "workdir_src=${{inputs.input_workdir_src}}" >> $GITHUB_ENV
+          if [-z "${{inputs.input_workdir_test}}" ]
+          then
+            echo "workdir_test=./test/" >> $GITHUB_ENV
+          else
+            echo "workdir_test=${{inputs.input_workdir_test}}" >> $GITHUB_ENV
+      - name: Add Github Package
+        run: |
+          dotnet nuget locals -c all
+          dotnet nuget add source https://nuget.pkg.github.com/architecture-it/index.json --name github -u ${{ inputs.github_username}} -p ${{ inputs.github_token }} --store-password-in-clear-text
+      # Run dotnet build and package
+      - name: dotnet build
+        run: |
+          dotnet restore
+          dotnet build
+        working-directory: ${{ env.workdir_src }}
+      - name: dotnet test
+        run: dotnet test
+        working-directory: ${{ env.workdir_test }}
