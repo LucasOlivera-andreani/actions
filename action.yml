@@ -1,7 +1,7 @@
 name: "Dotnet build"
 description: "Realiza el Restore, build y test"
 
-input:
+inputs:
   github_username:
     description: "usuario de github para autenticarse en los packages"
     required: true
@@ -11,14 +11,16 @@ input:
   workdir_src:
     description: "directorio donde se encuentra el project a compilar DEFAULT: ./src"
     required: false
-    default: ./src
+    default: './src'
   workdir_test:
     description: "directorio donde se encuentra los test DEFAULT: ./test"
     required: false
-    default: ./test
+    default: './test'
 runs:
   using: "composite"
   steps:
+      - run: echo hi!, we working.
+        shell: bash
         # Setup .NET Core SDK
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
