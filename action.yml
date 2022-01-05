@@ -1,6 +1,5 @@
 name: "Dotnet build"
 description: "Realiza el Restore, build y test"
-
 inputs:
   github_username:
     description: "usuario de github para autenticarse en los packages"
@@ -22,20 +21,3 @@ runs:
       - run: echo hi!, we working.
         shell: bash
         # Setup .NET Core SDK
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.x
-      - name: Add Github Package
-        run: |
-          dotnet nuget locals -c all
-          dotnet nuget add source https://nuget.pkg.github.com/architecture-it/index.json --name github -u ${{ inputs.github_username}} -p ${{ inputs.github_token }} --store-password-in-clear-text
-      # Run dotnet build and package
-      - name: dotnet build
-        run: |
-          dotnet restore
-          dotnet build
-        working-directory: ${{ inputs.workdir_src }}
-      - name: dotnet test
-        run: dotnet test
-        working-directory: ${{ inputs.workdir_test }}
